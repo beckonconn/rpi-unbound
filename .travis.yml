@@ -3,6 +3,9 @@ services:
 - docker
 language: bash
 script:
+# Set up qemu
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+# Build the container
 - docker build -t beckonconn/rpi-unbound:build .
 # test image
 - docker run beckonconn/rpi-unbound:build unbound-host google.com
