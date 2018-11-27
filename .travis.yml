@@ -1,0 +1,21 @@
+sudo: required
+services:
+- docker
+language: bash
+script:
+# Set up qemu
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+# Build the container
+- docker build -t beckonconn/rpi-unbound:build .
+# test image
+- docker run beckonconn/rpi-unbound:build unbound-host google.com
+# push image
+- >
+  if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    TAG=$(grep "FROM " Dockerfile | sed 's/.*://')
+    docker tag beckonconn/rpi-unbound:build beckonconn/rpi-unbound:$TAG
+    docker tag beckonconn/rpi-unbound:build beckonconn/rpi-unbound:latest
+    docker push beckonconn/rpi-unbound:$TAG
+    docker push beckonconn/rpi-unbound:latest
+  fi
