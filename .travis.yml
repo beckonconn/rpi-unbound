@@ -9,7 +9,7 @@ script:
 # Build the container
 - docker build -t beckonconn/rpi-unbound:build .
 # test image
-- docker run --rm -p 53/53/udp beckonconn/rpi-unbound:build unbound -h
+- docker run -it --rm -p 53/53/udp beckonconn/rpi-unbound:build unbound -h
 # push image
 - >
   if [ "$TRAVIS_BRANCH" == "master" ]; then
