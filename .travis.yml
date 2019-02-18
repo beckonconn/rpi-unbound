@@ -2,11 +2,10 @@ sudo: required
 services:
 - docker
 language: bash
-before:script:
-# Set up qemu
-- docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
 script:
+# Set up qemu
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
 # Build the container
 - docker build -t beckonconn/rpi-unbound:build .
 # test image
