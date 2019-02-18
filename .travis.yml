@@ -2,13 +2,15 @@ sudo: required
 services:
 - docker
 language: bash
-script:
+before:script:
 # Set up qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+
+script:
 # Build the container
 - docker build -t beckonconn/rpi-unbound:build .
 # test image
-- docker run beckonconn/rpi-unbound:build unbound -h
+- docker run --rm -p 53/53/udp beckonconn/rpi-unbound:build unbound -h
 # push image
 - >
   if [ "$TRAVIS_BRANCH" == "master" ]; then
